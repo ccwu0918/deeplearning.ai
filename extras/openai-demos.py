@@ -40,7 +40,8 @@ for i, prompt in enumerate(data["prompt"]):
         #    model="gpt-3.5-turbo-instruct",
         #    prompt=prompt
         #)
-        response_completion = openai.ChatCompletion.create(
+        # response_completion = openai.ChatCompletion.create(
+        response_completion = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{
                 "role": "user",
@@ -51,10 +52,15 @@ for i, prompt in enumerate(data["prompt"]):
             frequency_penalty=0,
             presence_penalty =0
         )
-        print(f"""Response {j+1}: {response_completion["choices"][0]["message"]["content"]}""")
-        data["response"+str(j+1)].append(response_completion["choices"][0]["message"]["content"])
 
-    consistency_completion = openai.ChatCompletion.create(
+        # print(f"""Response {j+1}: {response_completion["choices"][0]["message"]["content"]}""")
+        # data["response"+str(j+1)].append(response_completion["choices"][0]["message"]["content"])
+
+        print(f"""Response {j+1}: {response_completion.choices[0].message.content}""")        
+        data["response"+str(j+1)].append(response_completion.choices[0].message.content)
+
+    # consistency_completion = openai.ChatCompletion.create(
+    consistency_completion = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{
             "role": "system",
@@ -66,8 +72,11 @@ for i, prompt in enumerate(data["prompt"]):
             Context: {data['response2'][i]}\n\n{data['response3'][i]}."""
         }]
     )
-    print(f"""Self similarity: {consistency_completion["choices"][0]["message"]["content"]}""")
-    data["selfsimilarity"].append(consistency_completion["choices"][0]["message"]["content"])
+    # print(f"""Self similarity: {consistency_completion["choices"][0]["message"]["content"]}""")
+    # data["selfsimilarity"].append(consistency_completion["choices"][0]["message"]["content"])
+    print(f"""Self similarity: {consistency_completion.choices[0].message.content}""")
+    data["selfsimilarity"].append(consistency_completion.choices[0].message.content)
+
 
     print("")
 
